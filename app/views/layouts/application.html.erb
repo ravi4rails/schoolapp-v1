@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SchoolappV1</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <% if user_signed_in? %>
+    <% if current_user.role == "Admin" %>
+      <%= render "layouts/admin_nav"%>
+    <% elsif  current_user.role == "Employee" %>
+      <%= render "layouts/employee_nav"%>
+    <% elsif current_user.role == "Student" %>
+      <%= render "layouts/student_nav"%>
+    <% end %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+  <% end %>
+  <%= yield %>
+</body>
+</html>
