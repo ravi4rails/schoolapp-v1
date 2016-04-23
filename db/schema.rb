@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160423141202) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "admins", force: :cascade do |t|
     t.string   "first_name"
     t.string   "middle_name"
@@ -29,8 +32,8 @@ ActiveRecord::Schema.define(version: 20160423141202) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "course_subjects", ["course_id"], name: "index_course_subjects_on_course_id"
-  add_index "course_subjects", ["subject_id"], name: "index_course_subjects_on_subject_id"
+  add_index "course_subjects", ["course_id"], name: "index_course_subjects_on_course_id", using: :btree
+  add_index "course_subjects", ["subject_id"], name: "index_course_subjects_on_subject_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -39,7 +42,7 @@ ActiveRecord::Schema.define(version: 20160423141202) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "courses", ["department_id"], name: "index_courses_on_department_id"
+  add_index "courses", ["department_id"], name: "index_courses_on_department_id", using: :btree
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
@@ -54,8 +57,8 @@ ActiveRecord::Schema.define(version: 20160423141202) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "employee_subjects", ["employee_id"], name: "index_employee_subjects_on_employee_id"
-  add_index "employee_subjects", ["subject_id"], name: "index_employee_subjects_on_subject_id"
+  add_index "employee_subjects", ["employee_id"], name: "index_employee_subjects_on_employee_id", using: :btree
+  add_index "employee_subjects", ["subject_id"], name: "index_employee_subjects_on_subject_id", using: :btree
 
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
@@ -85,7 +88,7 @@ ActiveRecord::Schema.define(version: 20160423141202) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "news", ["admin_id"], name: "index_news_on_admin_id"
+  add_index "news", ["admin_id"], name: "index_news_on_admin_id", using: :btree
 
   create_table "students", force: :cascade do |t|
     t.string   "first_name"
@@ -128,7 +131,13 @@ ActiveRecord::Schema.define(version: 20160423141202) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "course_subjects", "courses"
+  add_foreign_key "course_subjects", "subjects"
+  add_foreign_key "courses", "departments"
+  add_foreign_key "employee_subjects", "employees"
+  add_foreign_key "employee_subjects", "subjects"
+  add_foreign_key "news", "admins"
 end
