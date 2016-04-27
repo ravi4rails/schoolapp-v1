@@ -1,12 +1,18 @@
 Rails.application.routes.draw do
+  resources :events do
+    collection do
+      get :event_calendar
+      get :calendar_events
+    end
+  end
   resources :news
   resources :subjects
   resources :courses
   resources :departments
   devise_for :users
 
-  resources :users do 
-    collection do 
+  resources :users do
+    collection do
       post :create_user
     end
   end
